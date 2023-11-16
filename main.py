@@ -2,7 +2,7 @@ import tkinter
 from PIL import Image, ImageTk
 from pygame import mixer
 
-BMS=[["A",1000],["P",2000],["P",2300],["L",3300],["E",4300],["K",4500],["O",5500]]
+BMS=[["A",1100],["B",1200],["A",1300],["B",1400],["A",1500],["B",1600],["A",1700]]
 BMS_time=[]
 BMS_type=[]
 NOTE_COUNT=len(BMS)
@@ -12,9 +12,9 @@ now_time=0
 NOTE_ALL=[]
 #205 perfect point
 #<145 or >265 lost
-#
-	
+
 key = ""
+
 def key_down(e):  #處理按下
     global key   
     key = e.keycode   #存取當前按下的鍵
@@ -33,13 +33,14 @@ def detect_BMS():
         BMS_type.append(ord(i[0]))
         BMS_time.append(i[1])
 
-
+#生成按鍵
 def set_note():
     init_x=1195
     init_y=200
     NOTE_ALL.append([1190,200,BMS_type[NOTE_NOW_COUNT_CREATIVE]])
     canvas.create_image(init_x, init_y,image=resized_photo, tag="NOTE") 
 
+#生成按鍵移動跟刪除
 def note_move_and_remove():
     global NOTE_ALL,COMBO,combo_count
     canvas.delete("NOTE")
@@ -73,22 +74,27 @@ def note_move_and_remove():
 
     NOTE_ALL=n.copy()
 
+#根據BMS產生字母於文字上方
 def note_type_text(canvas, text, x, y):
     
     label = canvas.create_text(x, y, text=text, font=("Times New Roman", 50), fill="blue", tag="note_type_text")
     return label    
 
+#combo計數器
 def combo_counter(canvas, text, x, y):
     label = canvas.create_text(x, y, text=text, font=("Times New Roman", 80), fill="black", tag="combo")
     return label
 
+#更新combo數
 def update_combo():
     global combo_count
     canvas.delete('combo')
     combo_count = combo_counter(canvas, COMBO, 770, 500)
+
 #已創建第幾個note
 NOTE_NOW_COUNT_CREATIVE=0
 
+#主循環
 def main():
 
     global now_time,NOTE_NOW_COUNT_CREATIVE,COMBO
@@ -117,7 +123,7 @@ def main():
 
     now_time+=50
     
-    
+    #每50毫秒偵測一次
     window.after(50, main)
 
 #基礎設定
