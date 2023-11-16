@@ -2,13 +2,12 @@ import tkinter
 from PIL import Image, ImageTk
 from pygame import mixer
 
-BMS=[["A",1100],["B",1200],["A",1300],["B",1400],["A",1500],["B",1600],["A",1700]]
+BMS=[["A",1100],["P",2000],["P",2500],["L",3000],["E",4000]]
 BMS_time=[]
 BMS_type=[]
 NOTE_COUNT=len(BMS)
 COMBO=0
 now_time=0
-# [type,start_time] perfect ponit = srart time+
 NOTE_ALL=[]
 #205 perfect point
 #<145 or >265 lost
@@ -47,7 +46,7 @@ def note_move_and_remove():
     canvas.delete('note_type_text')
     k=NOTE_ALL.copy()
     for i in range(len(NOTE_ALL)):
-        #缺時間判定
+  
         if len(k)!=0:
             
             if key==k[0][2] and k[0][0]<=265 and k[0][0]>=145:
@@ -58,15 +57,11 @@ def note_move_and_remove():
                 play_music()
                 update_combo()
 
-                
-
         if NOTE_ALL[i]!=0:
             note_type_text(canvas, chr(NOTE_ALL[i][2]), NOTE_ALL[i][0]-30, 100)
             canvas.create_image(NOTE_ALL[i][0]-30,NOTE_ALL[i][1] ,image=resized_photo, tag="NOTE") 
             NOTE_ALL[i][0]=NOTE_ALL[i][0]-30
             
-            
-
     n=NOTE_ALL.copy()
     for i in range(len(NOTE_ALL)):
         if NOTE_ALL[i]==0:
@@ -147,8 +142,10 @@ canvas.create_image(650, 300,image=bg_img, tag="BG")
 #COMBO數
 
 combo_count = combo_counter(canvas, 0, 770, 500)
+
 #讀取譜面
 detect_BMS()
+
 #載入音效
 mixer.init()
 mixer.music.load("MUSIC/hit.mp3")
