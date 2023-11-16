@@ -1,14 +1,16 @@
 import tkinter
 from PIL import Image, ImageTk
 import time
-BMS=[["A",1000],["B",2000],["B",2500],["B",2800],["B",3000],["B",4500],["B",4800]]
+BMS=[["A",1000],["B",2000],["C",2500],["B",2800],["A",3000],["B",4500],["B",4800]]
 BMS_time=[]
 BMS_type=[]
 NOTE_COUNT=len(BMS)
 now_time=0
 # [type,start_time] perfect ponit = srart time+
 NOTE_ALL=[]
-#205
+#205 perfect point
+#<145 or >265 lost
+#
 	
 key = ""
 def key_down(e):  #處理按下
@@ -30,18 +32,25 @@ def detect_BMS():
 def set_note():
     init_x=1190
     init_y=200
-    NOTE_ALL.append([1190,200])
+    NOTE_ALL.append([1190,200,BMS_type[NOTE_NOW_COUNT_CREATIVE]])
     canvas.create_image(init_x, init_y,image=resized_photo, tag="NOTE") 
 
 def note_move_and_remove():
     global NOTE_ALL
     canvas.delete("NOTE")
+    k=NOTE_ALL.copy()
     for i in range(len(NOTE_ALL)):
-        if key==65:
-            NOTE_ALL[0]=0
+        #缺時間判定
+        if len(k)!=0:
+            if key==k[0][2]:
+                 
+                k.pop(0)
+                NOTE_ALL[0]=0
+
         if NOTE_ALL[i]!=0:
             canvas.create_image(NOTE_ALL[i][0]-30,NOTE_ALL[i][1] ,image=resized_photo, tag="NOTE") 
-            NOTE_ALL[i]=[NOTE_ALL[i][0]-30,NOTE_ALL[i][1]]
+            NOTE_ALL[i][0]=NOTE_ALL[i][0]-30
+            
 
     n=NOTE_ALL.copy()
     for i in range(len(NOTE_ALL)):
@@ -70,7 +79,7 @@ def main():
             print(NOTE_NOW_COUNT_CREATIVE)
             NOTE_NOW_COUNT_CREATIVE=NOTE_NOW_COUNT_CREATIVE+1
         if len(NOTE_ALL)!=0:
-            if NOTE_ALL[0][0]<150:
+            if NOTE_ALL[0][0]<145:
                 NOTE_ALL.pop(0)
 
     now_time+=50
@@ -91,7 +100,7 @@ canvas.pack()
 
 bg_img = tkinter.PhotoImage(file="IMG/background.png")
 before_note = Image.open("IMG/note.png")
-before_note = before_note.resize((20, 100), Image.ANTIALIAS)
+before_note = before_note.resize((20, 100), Image.LANCZOS)
 resized_photo = ImageTk.PhotoImage(before_note) 
 
 canvas.create_image(650, 300,image=bg_img, tag="BG") 
