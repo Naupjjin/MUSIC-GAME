@@ -1,7 +1,8 @@
 import tkinter
 from PIL import Image, ImageTk
-import time
-BMS=[["A",1000],["P",2000],["P",2500],["L",2800],["E",3000],["K",4500],["O",4800]]
+from pygame import mixer
+
+BMS=[["A",1000],["P",2000],["P",2300],["L",3300],["E",4300],["K",4500],["O",5500]]
 BMS_time=[]
 BMS_type=[]
 NOTE_COUNT=len(BMS)
@@ -21,8 +22,11 @@ def key_down(e):  #處理按下
 def key_up(e):  #處理放開
     global key
     key = ""    #清空當前的按下狀態
- 
 
+#打擊音效
+def play_music():
+    
+    mixer.music.play()
 
 def detect_BMS():
     for i in BMS:
@@ -44,15 +48,16 @@ def note_move_and_remove():
     for i in range(len(NOTE_ALL)):
         #缺時間判定
         if len(k)!=0:
-            if key==k[0][2]:
-                
+            
+            if key==k[0][2] and k[0][0]<=265 and k[0][0]>=145:
+           
                 k.pop(0)
                 NOTE_ALL[0]=0
                 COMBO=COMBO+1
+                play_music()
                 update_combo()
-                
 
-        
+                
 
         if NOTE_ALL[i]!=0:
             note_type_text(canvas, chr(NOTE_ALL[i][2]), NOTE_ALL[i][0]-30, 100)
@@ -138,6 +143,9 @@ canvas.create_image(650, 300,image=bg_img, tag="BG")
 combo_count = combo_counter(canvas, 0, 770, 500)
 #讀取譜面
 detect_BMS()
+#載入音效
+mixer.init()
+mixer.music.load("MUSIC/hit.mp3")
 
 #主循環
 main()
