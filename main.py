@@ -1,7 +1,7 @@
 import tkinter
 from PIL import Image, ImageTk
 import time
-BMS=[["A",1000],["B",2000],["C",2500],["H",2800],["A",3000],["K",4500],["O",4800]]
+BMS=[["A",1000],["P",2000],["P",2500],["L",2800],["E",3000],["K",4500],["O",4800]]
 BMS_time=[]
 BMS_type=[]
 NOTE_COUNT=len(BMS)
@@ -106,6 +106,7 @@ def main():
             COMBO=0
             update_combo()
             if NOTE_COUNT-NOTE_NOW_COUNT_CREATIVE==0:
+                canvas.delete("note_type_text")
                 canvas.delete("NOTE")
                 update_combo()
 
